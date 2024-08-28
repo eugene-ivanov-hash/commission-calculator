@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+    php:
+        build:
+            args:
+                LINUX_USER_ID: ${LINUX_USER_ID:-1000}
+                XDEBUG_ENABLE: ${XDEBUG_ENABLE}
+            context: .
+            target: php-dev
+        environment:
+            COMPOSER_HOME: /home/docker/composer
+            PHP_IDE_CONFIG: serverName=${COMPOSE_PROJECT_NAME}
+            XDEBUG_CONFIG: client_host=${XDEBUG_CLIENT_HOST}
+        restart: unless-stopped
+        volumes:
+            - ./:/srv/app
+            - ${COMPOSER_HOME}:/home/docker/composer # composer from host
